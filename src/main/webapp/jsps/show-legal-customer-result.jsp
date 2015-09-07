@@ -15,22 +15,22 @@
             <li>
                 <label>Customer Number </label>
                 <input type="text" class="field-long" disabled
-                       value=<%=((LegalCustomer) request.getAttribute("result")).getCustomerNumber()%>/>
+                       value="<%=((LegalCustomer) request.getAttribute("result")).getCustomerNumber()%>"/>
             </li>
             <li>
                 <label>Company Name </label>
                 <input type="text" class="field-long" disabled
-                       value=<%=( (LegalCustomer) request.getAttribute("result")).getCompanyName()%>/>
+                       value= "<%=( (LegalCustomer) request.getAttribute("result")).getCompanyName()%> "/>
             </li>
             <li>
                 <label>Registration Date </label>
                 <input type="text" class="field-long" disabled
-                       value=<%=((LegalCustomer) request.getAttribute("result")).getRegistrationDate()%>/>
+                       value="<%=((LegalCustomer) request.getAttribute("result")).getRegistrationDate()%>" />
             </li>
             <li>
 
-                <input type="text" class="field-long" disabled
-                       value=<%=((LegalCustomer) request.getAttribute("result")).getEconomicCode()%>/>
+                <input type ="text" class="field-long" disabled
+                       value = "<%=((LegalCustomer) request.getAttribute("result")).getEconomicCode()%>" />
             </li>
         </ul>
     </div>

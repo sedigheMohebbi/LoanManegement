@@ -7,6 +7,8 @@ import exception.SqlException;
 import exception.ValidationException;
 import model.LegalCustomer;
 
+import java.util.List;
+
 public class LegalCustomerBiz {
     private static LegalCustomerBiz ourInstance = new LegalCustomerBiz();
 
@@ -52,6 +54,11 @@ public class LegalCustomerBiz {
             throw new ValidationException("Registration date is invalid");
         }
     }
-
-
+    public List<LegalCustomer> searchLegalCustomer(String companyName, String economicCode, String customerNumber) {
+        LegalCustomer legalCustomer = new LegalCustomer();
+        legalCustomer.setCompanyName(companyName);
+        legalCustomer.setEconomicCode(economicCode);
+        legalCustomer.setCustomerNumber(customerNumber);
+        return LegalCustomerCRUD.searchLegalCustomer(legalCustomer);
+    }
 }
