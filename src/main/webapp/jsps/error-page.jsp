@@ -11,7 +11,7 @@
 <div class=firstDiv>
     <div class="headerDiv"><h1> Error Page</h1></div>
     <div class="contentDiv">
-        <p id="massage"><%= ((Exception) request.getAttribute("error")).getMessage()%>    </p>
+        <p id="massage"><%= ((Exception) request.getAttribute("error")).getMessage()%>   </p>
     </div>
     <div class="backDiv">
         <a href="index.jsp">home</a>

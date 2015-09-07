@@ -28,7 +28,7 @@
                        value=<%=((LegalCustomer) request.getAttribute("result")).getRegistrationDate()%>/>
             </li>
             <li>
-                <label>Economic Code </label>
+
                 <input type="text" class="field-long" disabled
                        value=<%=((LegalCustomer) request.getAttribute("result")).getEconomicCode()%>/>
             </li>
