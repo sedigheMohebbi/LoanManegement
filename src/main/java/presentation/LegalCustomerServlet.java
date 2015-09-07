@@ -1,7 +1,9 @@
 package presentation;
 
+import business.LegalCustomerBiz;
 import exception.SqlException;
 import exception.ValidationException;
+import model.LegalCustomer;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -24,7 +26,7 @@ public class LegalCustomerServlet extends HttpServlet {
                 LegalCustomer res = LegalCustomerBiz.getInstance().createAndSaveLegalCustomer(request.getParameter("companyName"),
                         request.getParameter("registrationDate"), request.getParameter("economicCode"));
                 request.setAttribute("result", res);
-                nextJsp = "/jsps/show-legal-customer.jsp";
+                nextJsp = "/jsps/show-legal-customer-result.jsp";
 
             } catch (SqlException e) {
                 request.setAttribute("error",e);

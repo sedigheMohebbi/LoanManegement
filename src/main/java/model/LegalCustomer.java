@@ -6,13 +6,11 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="legalcustomer")
-@PrimaryKeyJoinColumn(name="id")
+@Table(name = "legalcustomer")
+@PrimaryKeyJoinColumn(name = "id")
 public class LegalCustomer extends Customer {
     @Column(name = "companyName")
     private String companyName;
-    @Column(name = "customerNumber")
-    private String customerNumber;
     @Column(name = "registrationDate")
     private String registrationDate;
     @Column(name = "economicCode")
@@ -25,14 +23,6 @@ public class LegalCustomer extends Customer {
 
     public void setCompanyName(String companyName) {
         this.companyName = companyName.trim();
-    }
-
-    public String getCustomerNumber() {
-        return customerNumber;
-    }
-
-    public void setCustomerNumber(String customerNumber) {
-        this.customerNumber = customerNumber.trim();
     }
 
     public String getRegistrationDate() {
