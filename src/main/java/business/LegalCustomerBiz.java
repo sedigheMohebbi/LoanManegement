@@ -61,4 +61,8 @@ public class LegalCustomerBiz {
         legalCustomer.setCustomerNumber(customerNumber);
         return LegalCustomerCRUD.searchLegalCustomer(legalCustomer);
     }
+    public LegalCustomer findLegalCustomer(int id) throws SqlException {
+        return  LegalCustomerCRUD.loadLegalCustomer(id);
+
+    }
 }

@@ -1,4 +1,5 @@
 <%@ page import="model.LegalCustomer" %>
+<%@ page import="java.util.List" %>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <!DOCTYPE html>
 <html>
@@ -20,29 +21,32 @@
                 <td class="resultTableHeader"> &nbsp;&nbsp;Update&nbsp;&nbsp;</td>
                 <td class="resultTableHeader"> &nbsp;&nbsp;Delete&nbsp;&nbsp;</td>
             </tr>
-           <% for (LegalCustomer legalCustomer : legalCustomers) {%>
-          <%  out.println( %>
+            <% List<LegalCustomer> legalCustomers;
+                legalCustomers = (List<LegalCustomer>) request.getAttribute("legalCustomers");%>
+            <% for (LegalCustomer legalCustomer : legalCustomers) {%>
             <tr>
-                <td> legalCustomer.getCompanyName()</td>
-                <td>" + legalCustomer.getEconomicCode() + "</td>
-                <td>" + legalCustomer.getCustomerNumber() + "</td>
-                <td>" + legalCustomer.getRegistrationDate() + "</td>
+                <td> <%=legalCustomer.getCompanyName()%></td>
+                <td> <%= legalCustomer.getEconomicCode() %> "</td>
+                <td><%= legalCustomer.getCustomerNumber() %> "</td>
+                <td><%= legalCustomer.getRegistrationDate() %> "</td>
                 <td>
                     <form method="get" action="LegalCustomerServlet">
                         <input type="submit" class="inputSubmit" value="update"/>
                         <input type="hidden" name="operation" value="update"/>
-                        <input type="hidden" name="id" value="<%= ((LegalCustomer)request.getAttribute("legalcustomer")).getId()%>" />
+                        <input type="hidden" name="id"
+                               value="<%= ((LegalCustomer)request.getAttribute("legalcustomer")).getId()%>"/>
                     </form>
                 </td>
                 <td>
                     <form method="get" action="LegalCustomerServlet">
                         <input type="submit" class="inputSubmit" value="delete">
                         <input type="hidden" name="operation" value="delete"/>
-                        <input type="hidden" name="id" value="<%= ((LegalCustomer)request.getAttribute("legalcustomer")).getId()%>" />
+                        <input type="hidden" name="id"
+                               value="<%= ((LegalCustomer)request.getAttribute("legalcustomer")).getId()%>"/>
                     </form>
                 </td>
             </tr>
-            }
+            <% }%>
 
         </table>
     </div>

@@ -37,13 +37,22 @@ public class LegalCustomerServlet extends HttpServlet {
                 nextJsp = "/jsps/error-page.jsp";
             }
         } else if ("search".equals(operation)) {
-            nextJsp="/jsps/legal-customer-search-page";
-        }
-        else if ("searchResult".equals(operation)) {
+            nextJsp = "/jsps/legal-customer-search-page";
+        } else if ("searchResult".equals(operation)) {
             List<LegalCustomer> legalCustomers = LegalCustomerBiz.getInstance().searchLegalCustomer(request.getParameter("companyName"), request.getParameter("economicCode"), request.getParameter("customerNumber"));
-           request.setAttribute("legalcustomer",legalCustomers);
-           // showSearchLegalCustomer(request, out, legalCustomers);
-        }else {
+            request.setAttribute("legalcustomer", legalCustomers);
+            nextJsp = "/jsps/show-search-legal-customer.jsp";
+        } else if ("update".equals(operation)) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            LegalCustomer legalCustomer = null;
+            try {
+                legalCustomer = LegalCustomerBiz.getInstance().findLegalCustomer(id);
+            } catch (SqlException e) {
+                System.out.println(e.getMessage());
+            }
+                nextJsp = "/jsps/legal-customer-update-page.jsp";
+
+        } else {
             nextJsp = "/jsps/manage-legal-customer.jsp";
         }
         RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(nextJsp);
