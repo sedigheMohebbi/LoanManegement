@@ -37,22 +37,49 @@ public class LegalCustomerServlet extends HttpServlet {
                 nextJsp = "/jsps/error-page.jsp";
             }
         } else if ("search".equals(operation)) {
-            nextJsp = "/jsps/legal-customer-search-page";
+            nextJsp = "/jsps/legal-customer-search-page.jsp";
         } else if ("searchResult".equals(operation)) {
             List<LegalCustomer> legalCustomers = LegalCustomerBiz.getInstance().searchLegalCustomer(request.getParameter("companyName"), request.getParameter("economicCode"), request.getParameter("customerNumber"));
-            request.setAttribute("legalcustomer", legalCustomers);
+            request.setAttribute("legalCustomers", legalCustomers);
             nextJsp = "/jsps/show-search-legal-customer.jsp";
         } else if ("update".equals(operation)) {
-            int id = Integer.parseInt(request.getParameter("id"));
-            LegalCustomer legalCustomer = null;
             try {
+                int id = Integer.parseInt(request.getParameter("id"));
+                LegalCustomer legalCustomer = null;
+
                 legalCustomer = LegalCustomerBiz.getInstance().findLegalCustomer(id);
-            } catch (SqlException e) {
-                System.out.println(e.getMessage());
-            }
+                request.setAttribute("legalCustomer", legalCustomer);
                 nextJsp = "/jsps/legal-customer-update-page.jsp";
 
-        } else {
+            } catch (SqlException e) {
+                request.setAttribute("error", e);
+                nextJsp = "/jsps/error-page.jsp";
+            }
+        } else if ("updateSave".equals(operation)) {
+            try {
+                LegalCustomer legalCustomer = LegalCustomerBiz.getInstance().updateLegal(request.getParameter("companyName"), request.getParameter("economicCode"),
+                        request.getParameter("registrationDate"), Integer.parseInt(request.getParameter("id")));
+                request.setAttribute("result", legalCustomer);
+                nextJsp = "/jsps/show-legal-customer-result.jsp";
+            } catch (SqlException e) {
+                request.setAttribute("error", e);
+                nextJsp = "/jsps/error-page.jsp";
+            } catch (ValidationException e) {
+                request.setAttribute("error", e);
+                nextJsp = "/jsps/error-page.jsp";
+            }
+        }
+        else if ("delete".equals(operation)) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            try {
+                LegalCustomerBiz.getInstance().deleteLegalCustomer(id);
+                nextJsp = "/jsps/legal-customer-delete-page.jsp";
+
+            } catch (SqlException e) {
+                request.setAttribute("error", e);
+                nextJsp = "/jsps/error-page.jsp";
+            }}
+        else {
             nextJsp = "/jsps/manage-legal-customer.jsp";
         }
         RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(nextJsp);

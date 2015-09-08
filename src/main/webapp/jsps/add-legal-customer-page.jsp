@@ -5,26 +5,22 @@
     <meta charset="UTF-8">
     <title>Customer Manager</title>
     <link href="base.css" rel="stylesheet"/>
-
 </head>
 <body>
-<div class=firstDiv>
-    <div class=headerDiv><h1> Search Legal Customer</h1></div>
+<div class="firstDiv">
+    <div class="headerDiv"><h1> Add Legal Customer</h1></div>
     <div class="contentDiv">
         <form method="get" action="LegalCustomerServlet">
+
             <ul class="form-style-1">
-                <li>
-                    <label>Customer Number </label>
-                    <input type="text" name="customerNumber" class="field-long"/>
-                </li>
                 <li>
                     <label>Company Name </label>
                     <input type="text" name="companyName" class="field-long"/>
+
                 </li>
                 <li>
                     <label>Registration Date </label>
                     <input type="text" name="registrationDate" class="field-long"/>
-
                 </li>
                 <li>
                     <label>Economic Code </label>
@@ -32,10 +28,10 @@
 
                 </li>
                 <li>
-                    <input type="submit" value="search"/>
+                    <input type="submit" value="save"/>
                 </li>
-                <input type="hidden" name="operation" value="searchResult"/>
             </ul>
+            <input type="hidden" name="operation" value="save"/>
         </form>
     </div>
     <div class="backDiv">

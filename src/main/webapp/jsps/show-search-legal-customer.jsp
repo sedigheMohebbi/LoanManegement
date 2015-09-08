@@ -26,15 +26,15 @@
             <% for (LegalCustomer legalCustomer : legalCustomers) {%>
             <tr>
                 <td> <%=legalCustomer.getCompanyName()%></td>
-                <td> <%= legalCustomer.getEconomicCode() %> "</td>
-                <td><%= legalCustomer.getCustomerNumber() %> "</td>
-                <td><%= legalCustomer.getRegistrationDate() %> "</td>
+                <td> <%= legalCustomer.getEconomicCode() %> </td>
+                <td><%= legalCustomer.getCustomerNumber() %> </td>
+                <td><%= legalCustomer.getRegistrationDate() %> </td>
                 <td>
                     <form method="get" action="LegalCustomerServlet">
                         <input type="submit" class="inputSubmit" value="update"/>
                         <input type="hidden" name="operation" value="update"/>
                         <input type="hidden" name="id"
-                               value="<%= ((LegalCustomer)request.getAttribute("legalcustomer")).getId()%>"/>
+                               value="<%= legalCustomer.getId()%>"/>
                     </form>
                 </td>
                 <td>
@@ -42,7 +42,7 @@
                         <input type="submit" class="inputSubmit" value="delete">
                         <input type="hidden" name="operation" value="delete"/>
                         <input type="hidden" name="id"
-                               value="<%= ((LegalCustomer)request.getAttribute("legalcustomer")).getId()%>"/>
+                               value="<%= legalCustomer.getId()%>"/>
                     </form>
                 </td>
             </tr>
@@ -50,9 +50,9 @@
 
         </table>
     </div>
-    <div class=\"backDiv\">
-        <a href=\"/index.html\">home</a>
-        <a href=\"/LegalCustomerServlet\">back</a>
+    <div class="backDiv">
+        <a href="index.jsp">home</a>
+        <a href="LegalCustomerServlet">back</a>
     </div>
 </div>
 </body>
