@@ -4,10 +4,7 @@ package dataacceess;
 import com.sun.org.apache.xpath.internal.operations.And;
 import exception.SqlException;
 import model.LegalCustomer;
-import org.hibernate.Query;
-import org.hibernate.Session;
-import org.hibernate.SessionFactory;
-import org.hibernate.Transaction;
+import org.hibernate.*;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -61,8 +58,8 @@ public class LegalCustomerCRUD {
         SessionFactory sessionFactory = SqlConnect.createSessionFactory();
         Session session = sessionFactory.openSession();
         try {
-            Query query = session.createQuery("SELECT legal.ecconomicCode FROM LegalCustomer legal where legal.economicCode =:ecoCOde and legal.id <> :idNumber ");
-            query.setParameter("ecoCOde", economicCode);
+            Query query = session.createQuery("SELECT legal.economicCode FROM LegalCustomer legal where legal.economicCode =:ecoCode and legal.id <> :idNumber ");
+            query.setParameter("ecoCode", economicCode);
             query.setParameter("idNumber", id);
             List ecoList = query.list();
             if (ecoList.isEmpty()) {
@@ -97,6 +94,7 @@ public class LegalCustomerCRUD {
             return query.list();
 
         } finally {
+
             session.close();
         }
     }
@@ -105,9 +103,11 @@ public class LegalCustomerCRUD {
         SessionFactory sessionFactory = SqlConnect.createSessionFactory();
         Session session = sessionFactory.openSession();
         try {
-            LegalCustomer legalCustomer = session.load(LegalCustomer.class, id);
+            LegalCustomer legalCustomer = session.get(LegalCustomer.class, id);
+
             return legalCustomer;
         } finally {
+
             session.close();
         }
     }

@@ -45,7 +45,7 @@ public class LegalCustomerServlet extends HttpServlet {
         } else if ("update".equals(operation)) {
             try {
                 int id = Integer.parseInt(request.getParameter("id"));
-                LegalCustomer legalCustomer = null;
+                LegalCustomer legalCustomer ;
 
                 legalCustomer = LegalCustomerBiz.getInstance().findLegalCustomer(id);
                 request.setAttribute("legalCustomer", legalCustomer);

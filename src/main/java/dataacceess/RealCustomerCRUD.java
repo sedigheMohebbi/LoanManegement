@@ -3,6 +3,9 @@ package dataacceess;
 
 import exception.SqlException;
 import model.RealCustomer;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.Transaction;
 
 import java.sql.Connection;
 import java.sql.PreparedStatement;
@@ -23,30 +26,14 @@ public class RealCustomerCRUD {
     }
 
     public static RealCustomer saveRealCustomer(RealCustomer realCustomer) throws SqlException {
+        SessionFactory sessionFactory = SqlConnect.createSessionFactory();
+        Session session = sessionFactory.openSession();
         try {
-            //  Connection connection = DriverManager.getConnection(CustomerCRUD.CONNECTION_URL, CustomerCRUD.USER, CustomerCRUD.PASSWORD);
-            Connection connection = SqlConnect.getInstance().getConn();
-
-            PreparedStatement preparedStatement = connection.prepareStatement("INSERT INTO customer (customerNumber) VALUES (?)");
-            preparedStatement.setString(1, realCustomer.getCustomerNumber());
-            preparedStatement.executeUpdate();
-            PreparedStatement preparedStatement1 = connection.prepareStatement("SELECT id from customer WHERE customerNumber = ?");
-            preparedStatement1.setString(1, realCustomer.getCustomerNumber());
-            ResultSet resultSet = preparedStatement1.executeQuery();
-            resultSet.first();
-            PreparedStatement preparedStatement2 = connection.prepareStatement("INSERT INTO realCustomer (firstName,lastName,fatherName,birthDate,nationalCode ,id) VALUES (?,?,?,?,?,?)");
-            preparedStatement2.setString(1, realCustomer.getFirstName());
-            preparedStatement2.setString(2, realCustomer.getLastName());
-            preparedStatement2.setString(3, realCustomer.getFatherName());
-            preparedStatement2.setString(4, realCustomer.getBirthDate());
-            preparedStatement2.setString(5, realCustomer.getNationalCode());
-            preparedStatement2.setInt(6, resultSet.getInt("id"));
-            preparedStatement2.executeUpdate();
-
-            //connection.close();
-
-        } catch (SQLException e) {
-            e.printStackTrace();
+            Transaction transaction = session.beginTransaction();
+            session.save(realCustomer);
+            transaction.commit();
+        }finally {
+            session.close();
         }
         return realCustomer;
     }

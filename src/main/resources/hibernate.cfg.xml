@@ -21,6 +21,9 @@
         <property name="hibernate.connection.password">
             123456q@
         </property>
+        <property name="show_sql">
+            true
+        </property>
 
     </session-factory>
 </hibernate-configuration>

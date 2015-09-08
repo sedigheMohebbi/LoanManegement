@@ -3,6 +3,7 @@ package dataacceess;
 
 import model.Customer;
 import model.LegalCustomer;
+import model.RealCustomer;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -43,12 +44,14 @@ public class SqlConnect {
     }
 
     private static SessionFactory sessionFactory = null;
+
     static SessionFactory createSessionFactory() {
-        if(sessionFactory == null) {
+        if (sessionFactory == null) {
             Configuration configuration = new Configuration();
             configuration.configure("/hibernate.cfg.xml");
             configuration.addAnnotatedClass(Customer.class);
             configuration.addAnnotatedClass(LegalCustomer.class);
+            configuration.addAnnotatedClass(RealCustomer.class);
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         }

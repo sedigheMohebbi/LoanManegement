@@ -1,11 +1,23 @@
 package model;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
 
+@Entity
+@Table(name = "realcustomer")
+@PrimaryKeyJoinColumn(name = "id")
 public class RealCustomer extends Customer {
+    @Column(name = "nationalCode")
     private String nationalCode;
+    @Column(name = "birthDate")
     private String birthDate;
+    @Column(name = "fatherName")
     private String fatherName;
+    @Column(name = "lastName")
     private String lastName;
+    @Column(name = "firstName")
     private String firstName;
 
     public String getNationalCode() {
