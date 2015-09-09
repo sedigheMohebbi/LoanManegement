@@ -1,15 +1,9 @@
 package dataacceess;
 
 
-import com.sun.org.apache.xpath.internal.operations.And;
 import exception.SqlException;
 import model.LegalCustomer;
 import org.hibernate.*;
-
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -118,7 +112,7 @@ public class LegalCustomerCRUD {
 
         try {
             Transaction transaction = session.beginTransaction();
-            LegalCustomer legalCustomer1 = session.load(LegalCustomer.class, legalCustomer.getId());
+            LegalCustomer legalCustomer1 = session.get(LegalCustomer.class, legalCustomer.getId());
             legalCustomer1.setCompanyName(legalCustomer.getCompanyName());
             legalCustomer1.setEconomicCode(legalCustomer.getEconomicCode());
             legalCustomer1.setRegistrationDate(legalCustomer.getRegistrationDate());

@@ -2,7 +2,9 @@ package dataacceess;
 
 
 import exception.SqlException;
+import model.LegalCustomer;
 import model.RealCustomer;
+import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
@@ -32,146 +34,118 @@ public class RealCustomerCRUD {
             Transaction transaction = session.beginTransaction();
             session.save(realCustomer);
             transaction.commit();
-        }finally {
+        } finally {
             session.close();
         }
         return realCustomer;
     }
 
     public static boolean existRealCustomerWithNationalCode(String nationalCode) throws SqlException {
+        SessionFactory sessionFactory = SqlConnect.createSessionFactory();
+        Session session = sessionFactory.openSession();
         try {
-            // Connection connection = DriverManager.getConnection(CustomerCRUD.CONNECTION_URL, CustomerCRUD.USER, CustomerCRUD.PASSWORD);
-            Connection connection = SqlConnect.getInstance().getConn();
+            Query query = session.createQuery("SELECT realCustomer.nationalCode FROM RealCustomer realCustomer WHERE realCustomer.nationalCode = :nationalCode");
+            query.setParameter("nationalCode", nationalCode);
+            if (query.list().isEmpty()) {
+                return false;
+            } else {
+                return true;
+            }
 
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT nationalCode FROM realcustomer WHERE nationalCode=?");
-            preparedStatement.setString(1, nationalCode);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            return resultSet.next();
-        } catch (SQLException e) {
-            throw new SqlException("EXCEPTION", e);
+
+        } finally {
+            session.close();
         }
     }
 
     public static boolean existsRealCustomerNationalCode(String nationalCode, int id) throws SqlException {
+        SessionFactory sessionFactory = SqlConnect.createSessionFactory();
+        Session session = sessionFactory.openSession();
         try {
-            //     Connection connection = DriverManager.getConnection(CustomerCRUD.CONNECTION_URL, CustomerCRUD.USER, CustomerCRUD.PASSWORD);
-            Connection connection = SqlConnect.getInstance().getConn();
-
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT nationalCode FROM realcustomer WHERE nationalCode=? AND id<>? ");
-            preparedStatement.setString(1, nationalCode);
-            preparedStatement.setInt(2, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (!resultSet.next()) {
+            Query query = session.createQuery("SELECT realCustomer.nationalCode FROM RealCustomer realCustomer WHERE realCustomer.nationalCode = :nationalCode AND realCustomer.id <> :id");
+            query.setParameter("nationalCode", nationalCode);
+            query.setParameter("id", id);
+            if (query.list().isEmpty()) {
                 return false;
-            }
-            return true;
-        } catch (SQLException e) {
-            throw new SqlException("Exception", e);
+            } else return true;
+        } finally {
+            session.close();
         }
     }
 
     public static List<RealCustomer> searchRealCustomer(RealCustomer realCustomer) {
         List<RealCustomer> realCustomers = new ArrayList<RealCustomer>();
+        SessionFactory sessionFactory = SqlConnect.createSessionFactory();
+        Session session = sessionFactory.openSession();
         try {
-            Connection connection = SqlConnect.getInstance().getConn();
-
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * FROM realcustomer inner join customer on realcustomer.id=customer.id\n" +
-                    " WHERE 1=1 " +
-                    (realCustomer.getFirstName().length() > 0 ? " AND firstName = ?" : "") +// meghdar gereft
-                    (realCustomer.getLastName().length() > 0 ? " AND lastName = ?" : "") +
-                    (realCustomer.getNationalCode().length() > 0 ? " AND nationalCode = ?" : "") +
-                    (realCustomer.getCustomerNumber().length() > 0 ? "AND customerNumber = ?" : ""));
-            int index = 1;
+            Query query = session.createQuery("SELECT realCustomer from RealCustomer realCustomer where 1=1" +
+                    (realCustomer.getFirstName().length() > 0 ? " AND realCustomer.fistName=:name" : "") +
+                    (realCustomer.getLastName().length() > 0 ? " AND realCustomer.lastName=:lastName" : "") +
+                    (realCustomer.getNationalCode().length() > 0 ? " AND realCustomer.nationalCode=:nationalCode" : "") +
+                    (realCustomer.getCustomerNumber().length() > 0 ? " AND realCustomer.customerNumber=:customerNumber" : ""));
             if (realCustomer.getFirstName().length() > 0) {
-                preparedStatement.setString(index, realCustomer.getFirstName());
-                index++;
+                query.setParameter("name", realCustomer.getFirstName());
             }
             if (realCustomer.getLastName().length() > 0) {
-                preparedStatement.setString(index, realCustomer.getLastName());
-                index++;
+                query.setParameter("lastName", realCustomer.getLastName());
             }
             if (realCustomer.getNationalCode().length() > 0) {
-                preparedStatement.setString(index, realCustomer.getNationalCode());
-                index++;
+                query.setParameter("nationalCode", realCustomer.getNationalCode());
             }
-            if (realCustomer.getCustomerNumber().length() > 0) {
-                preparedStatement.setString(index, realCustomer.getCustomerNumber());
-            }
-            ResultSet resultSet = preparedStatement.executeQuery();
-            while (resultSet.next()) {
-                RealCustomer realCustomer1 = new RealCustomer();
-                realCustomer1.setFirstName(resultSet.getString("firstName"));
-                realCustomer1.setLastName(resultSet.getString("lastName"));
-                realCustomer1.setFatherName(resultSet.getString("fatherName"));
-                realCustomer1.setBirthDate(resultSet.getString("birthDate"));
-                realCustomer1.setNationalCode(resultSet.getString("nationalCode"));
-                realCustomer1.setId(resultSet.getInt("id"));
-                realCustomer1.setCustomerNumber(resultSet.getString("customerNumber"));
-                realCustomers.add(realCustomer1);
+            if (realCustomer.getNationalCode().length() > 0) {
+                query.setParameter("customerNumber", realCustomer.getCustomerNumber());
             }
 
-        } catch (SQLException e) {
-            e.printStackTrace();
+            return query.list();
+
+        } finally {
+            session.close();
         }
-        return realCustomers;
     }
 
     public static RealCustomer loadRealCustomer(int id) throws SqlException {
+        SessionFactory sessionFactory = SqlConnect.createSessionFactory();
+        Session session = sessionFactory.openSession();
         try {
-
-            Connection connection = SqlConnect.getInstance().getConn();
-            PreparedStatement preparedStatement = connection.prepareStatement("SELECT * from customer INNER join realcustomer on customer.id=realcustomer.id WHERE realcustomer.id=?");
-            preparedStatement.setInt(1, id);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            RealCustomer realCustomer = new RealCustomer();
-            resultSet.first();
-            realCustomer.setFirstName(resultSet.getString("firstName"));
-            realCustomer.setLastName(resultSet.getString("lastName"));
-            realCustomer.setFatherName(resultSet.getString("fatherName"));
-            realCustomer.setNationalCode(resultSet.getString("nationalCode"));
-            realCustomer.setBirthDate(resultSet.getString("birthDate"));
-            realCustomer.setId(resultSet.getInt("id"));
-            realCustomer.setCustomerNumber(resultSet.getString("customerNumber"));
+            RealCustomer realCustomer = session.get(RealCustomer.class, id);
 
             return realCustomer;
+        } finally {
 
-
-        } catch (SQLException e) {
-            throw new SqlException("SQL EXCEPTION", e);
+            session.close();
         }
-
     }
+
+
     public static RealCustomer updateRealCustomer(RealCustomer realCustomer) throws SqlException {
+        SessionFactory sessionFactory = SqlConnect.createSessionFactory();
+        Session session = sessionFactory.openSession();
         try {
+            Transaction transaction = session.beginTransaction();
+            RealCustomer realCustomer1 = session.get(realCustomer.getClass(), realCustomer.getId());
+            realCustomer1.setFirstName(realCustomer.getFirstName());
+            realCustomer1.setLastName(realCustomer.getLastName());
+            realCustomer1.setFatherName(realCustomer.getFatherName());
+            realCustomer1.setNationalCode(realCustomer.getNationalCode());
+            realCustomer1.setBirthDate(realCustomer.getBirthDate());
+            transaction.commit();
+            return realCustomer1;
 
-
-            Connection connection = SqlConnect.getInstance().getConn();
-            PreparedStatement preparedStatement = connection.prepareStatement("UPDATE realcustomer SET firstName=?,lastName=?,fatherName=?,nationalCode=?,birthDate=? WHERE id=?");
-            preparedStatement.setString(1, realCustomer.getFirstName());
-            preparedStatement.setString(2, realCustomer.getLastName());
-            preparedStatement.setString(3, realCustomer.getFatherName());
-            preparedStatement.setString(4, realCustomer.getNationalCode());
-            preparedStatement.setString(5, realCustomer.getBirthDate());
-            preparedStatement.setInt(6, realCustomer.getId());
-            preparedStatement.executeUpdate();
-
-
-        } catch (SQLException e) {
-            throw new SqlException("EXception", e);
+        } finally {
+            session.close();
         }
-        return loadRealCustomer(realCustomer.getId());
     }
+
     public static void deleteRealCustomer(int id) throws SqlException {
-        Connection connection = SqlConnect.getInstance().getConn();
+        SessionFactory sessionFactory = SqlConnect.createSessionFactory();
+        Session session = sessionFactory.openSession();
         try {
-            PreparedStatement preparedStatement = connection.prepareStatement("DELETE FROM realcustomer WHERE id=? ");
-            preparedStatement.setInt(1,id);
-            preparedStatement.executeUpdate();
-            PreparedStatement preparedStatement1 = connection.prepareStatement("DELETE FROM customer WHERE id=?");
-            preparedStatement1.setInt(1,id);
-            preparedStatement1.executeUpdate();
-        } catch (SQLException e) {
-            throw new SqlException("SQL EXCEPTION in delete", e);
+            Transaction transaction = session.beginTransaction();
+            RealCustomer realCustomer = session.get(RealCustomer.class, id);
+            session.delete(realCustomer);
+            transaction.commit();
+        } finally {
+            session.close();
         }
 
     }

@@ -1,9 +1,11 @@
 package presentation;
 
 
+import business.LegalCustomerBiz;
 import business.RealCustomerBiz;
 import exception.SqlException;
 import exception.ValidationException;
+import model.LegalCustomer;
 import model.RealCustomer;
 
 import javax.servlet.RequestDispatcher;
@@ -44,8 +46,41 @@ public class RealCustomerServlet extends HttpServlet {
             next = "/jsps/real-customer-search-page.jsp";
         } else if ("searchResult".equals(operation)) {
             List<RealCustomer> realCustomers = RealCustomerBiz.getInstance().searchRealCustomer(request.getParameter("firstName"), request.getParameter("lastName"), request.getParameter("nationalCode"), request.getParameter("customerNumber"));
-            request.setAttribute("realCustomer",realCustomers);
-            next = "jsps/show-search-real-customer";
+            request.setAttribute("realCustomer", realCustomers);
+            next = "/jsps/show-search-real-customer.jsp";
+        } else if ("update".equals(operation)) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            RealCustomer realCustomer = null;
+            try {
+                realCustomer = RealCustomerBiz.getInstance().findRealCustomer(id);
+                request.setAttribute("realCustomer", realCustomer);
+                next = "/jsps/real-customer-update-page.jsp";
+            } catch (SqlException e) {
+                request.setAttribute("error", e);
+                next = "/jsps/error-page.jsp";
+            }
+        } else if ("updateSave".equals(operation)) {
+            try {
+                RealCustomer realCustomer = RealCustomerBiz.getInstance().updateRealCustomer(request.getParameter("firstName"), request.getParameter("lastName"), request.getParameter("fatherName"), request.getParameter("nationalCode"),
+                        request.getParameter("birthDate"), Integer.parseInt(request.getParameter("id")));
+                request.setAttribute("realCustomer", realCustomer);
+                next = "/jsps/add-real-customer-page.jsp";
+            } catch (SqlException e) {
+                request.setAttribute("error", e);
+                next = "/jsps/error-page.jsp";
+            } catch (ValidationException e) {
+                request.setAttribute("error", e);
+                next = "/jsps/error-page.jsp";
+            }
+        } else if ("delete".equals(operation)) {
+            int id = Integer.parseInt(request.getParameter("id"));
+            try {
+                RealCustomerBiz.getInstance().deleteRealCustomer(id);
+                next = "/jsps/real-customer-delete-page.jsp";
+            } catch (SqlException e) {
+                request.setAttribute("error", e);
+                next = "/jsps/error-page.jsp";
+            }
         } else {
             next = "/jsps/manage-real-customer.jsp";
         }

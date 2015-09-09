@@ -40,7 +40,7 @@
             <li>
                 <label>national Code </label>
                 <input type="text" class="field-long" disabled
-                       value="<%=((RealCustomer)request.getAttribute("realCustomer")).getLastName()%>"/>
+                       value="<%=((RealCustomer)request.getAttribute("realCustomer")).getNationalCode()%>"/>
             </li>
         </ul>
     </div>

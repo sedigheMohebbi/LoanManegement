@@ -44,7 +44,7 @@
                         <input type="submit" class="inputSubmit" value="update"/>
                         <input type="hidden" name="operation" value="update"/>
                         <input type="hidden" name="id"
-                               value="<%((RealCustomer)request.getAttribute("realCustomer")).getId();%>"/>
+                               value="<%=realCustomer.getId()%>"/>
                     </form>
                 </td>
                 <td>
@@ -52,7 +52,7 @@
                         <input type="submit" class="inputSubmit" value="delete"/>
                         <input type="hidden" name="operation" value="delete"/>
                         <input type="hidden" name="id"
-                               value="<%((RealCustomer)request.getAttribute("realCustomer")).getId();%>"/>
+                               value="<%=realCustomer.getId()%>"/>
                     </form>
                 </td>
             </tr>
