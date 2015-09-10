@@ -8,14 +8,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class LegalCustomerCRUD {
-    static {
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
 
-        } catch (ClassNotFoundException e) {
-            System.err.println("mysql jdbc driver not found");
-        }
-    }
 
     public static LegalCustomer saveLegalCustomer(LegalCustomer legalCustomer) throws SqlException {
         SessionFactory sf = SqlConnect.createSessionFactory();
@@ -68,7 +61,6 @@ public class LegalCustomerCRUD {
     }
 
     public static List<LegalCustomer> searchLegalCustomer(LegalCustomer legalCustomer) {
-        List<LegalCustomer> legalCustomers = new ArrayList<LegalCustomer>();
         SessionFactory sessionFactory = SqlConnect.createSessionFactory();
         Session session = sessionFactory.openSession();
         try {

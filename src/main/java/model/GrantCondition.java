@@ -11,6 +11,8 @@ public class GrantCondition {
     @Column(name = "id")
     private int id;
     @Column(name = "minContractDuration")
+    private String name;
+    @Column(name = "minContractDuration")
     private int minContractDuration;
     @Column(name = "maxContractDuration")
     private int maxContractDuration;
@@ -28,6 +30,14 @@ public class GrantCondition {
 
     public void setId(int id) {
         this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
     }
 
     public int getMinContractDuration() {

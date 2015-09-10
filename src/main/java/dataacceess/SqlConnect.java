@@ -2,6 +2,7 @@ package dataacceess;
 
 
 import model.Customer;
+import model.GrantCondition;
 import model.LegalCustomer;
 import model.RealCustomer;
 import org.hibernate.SessionFactory;
@@ -27,21 +28,7 @@ public class SqlConnect {
         return ourInstance;
     }
 
-    private SqlConnect() {
-        String CONNECTION_URL = "jdbc:mysql://localhost/customermanager?useUnicode=true&characterEncoding=UTF-8";
-        String USER = "root";
-        String PASSWORD = "123456q@";
-        try {
-            Class.forName("com.mysql.jdbc.Driver");
-            this.conn = DriverManager.getConnection(CONNECTION_URL, USER, PASSWORD);
 
-        } catch (ClassNotFoundException e) {
-            System.err.println("mysql jdbc driver not found");
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-
-    }
 
     private static SessionFactory sessionFactory = null;
 
@@ -52,6 +39,7 @@ public class SqlConnect {
             configuration.addAnnotatedClass(Customer.class);
             configuration.addAnnotatedClass(LegalCustomer.class);
             configuration.addAnnotatedClass(RealCustomer.class);
+            configuration.addAnnotatedClass(GrantCondition.class);
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         }

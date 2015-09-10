@@ -8,6 +8,10 @@
         <servlet-class>presentation.LegalCustomerServlet</servlet-class>
     </servlet>
     <servlet>
+        <servlet-name>LoanTypeServlet</servlet-name>
+        <servlet-class>presentation.LoanTypeServlet</servlet-class>
+    </servlet>
+    <servlet>
         <servlet-name>RealCustomerServlet</servlet-name>
         <servlet-class>presentation.RealCustomerServlet</servlet-class>
     </servlet>
@@ -18,5 +22,9 @@
     <servlet-mapping>
         <servlet-name>RealCustomerServlet</servlet-name>
         <url-pattern>/RealCustomerServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoanTypeServlet</servlet-name>
+        <url-pattern>/LoanTypeServlet</url-pattern>
     </servlet-mapping>
 </web-app>

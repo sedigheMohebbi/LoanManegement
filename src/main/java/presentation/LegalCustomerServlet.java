@@ -20,6 +20,7 @@ public class LegalCustomerServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         String operation = request.getParameter("operation");
         String nextJsp;
+        System.out.println("request.getSession().getAttribute(\"a\") = " + request.getSession().getAttribute("a"));
         if ("add".equals(operation)) {
             nextJsp = "/jsps/add-legal-customer.jsp";
         } else if ("save".equals(operation)) {
@@ -45,7 +46,7 @@ public class LegalCustomerServlet extends HttpServlet {
         } else if ("update".equals(operation)) {
             try {
                 int id = Integer.parseInt(request.getParameter("id"));
-                LegalCustomer legalCustomer ;
+                LegalCustomer legalCustomer;
 
                 legalCustomer = LegalCustomerBiz.getInstance().findLegalCustomer(id);
                 request.setAttribute("legalCustomer", legalCustomer);
@@ -68,8 +69,7 @@ public class LegalCustomerServlet extends HttpServlet {
                 request.setAttribute("error", e);
                 nextJsp = "/jsps/error-page.jsp";
             }
-        }
-        else if ("delete".equals(operation)) {
+        } else if ("delete".equals(operation)) {
             int id = Integer.parseInt(request.getParameter("id"));
             try {
                 LegalCustomerBiz.getInstance().deleteLegalCustomer(id);
@@ -78,8 +78,9 @@ public class LegalCustomerServlet extends HttpServlet {
             } catch (SqlException e) {
                 request.setAttribute("error", e);
                 nextJsp = "/jsps/error-page.jsp";
-            }}
-        else {
+            }
+        } else {
+            request.getSession().setAttribute("a", "salam");
             nextJsp = "/jsps/manage-legal-customer.jsp";
         }
         RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(nextJsp);

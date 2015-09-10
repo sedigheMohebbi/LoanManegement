@@ -57,4 +57,6 @@ public class LoanType {
     public void setGrantConditions(Set<GrantCondition> grantConditions) {
         this.grantConditions = grantConditions;
     }
+
+
 }

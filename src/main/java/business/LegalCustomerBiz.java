@@ -47,7 +47,7 @@ public class LegalCustomerBiz {
         if (economicExists) {
             throw new ValidationException("Economic code exists");
         }
-        if (!legalCustomer.getEconomicCode().matches("[0-9]{5}")) {
+        if (!legalCustomer.getEconomicCode().matches("[0-9]{10}")) {
             throw new ValidationException("economic code is invalid");
         }
         if (!legalCustomer.getRegistrationDate().matches("[1-9][0-9]{3}/[0-1][0-9]/[0-3][0-9]")) {
