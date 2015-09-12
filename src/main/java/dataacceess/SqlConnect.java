@@ -1,10 +1,7 @@
 package dataacceess;
 
 
-import model.Customer;
-import model.GrantCondition;
-import model.LegalCustomer;
-import model.RealCustomer;
+import model.*;
 import org.hibernate.SessionFactory;
 import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
 import org.hibernate.cfg.Configuration;
@@ -40,6 +37,8 @@ public class SqlConnect {
             configuration.addAnnotatedClass(LegalCustomer.class);
             configuration.addAnnotatedClass(RealCustomer.class);
             configuration.addAnnotatedClass(GrantCondition.class);
+            configuration.addAnnotatedClass(LoanType.class);
+
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);
         }

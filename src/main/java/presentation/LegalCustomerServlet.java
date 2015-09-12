@@ -22,13 +22,13 @@ public class LegalCustomerServlet extends HttpServlet {
         String nextJsp;
         System.out.println("request.getSession().getAttribute(\"a\") = " + request.getSession().getAttribute("a"));
         if ("add".equals(operation)) {
-            nextJsp = "/jsps/add-legal-customer.jsp";
+            nextJsp = "/jsps/legalcustomer/add-legal-customer.jsp";
         } else if ("save".equals(operation)) {
             try {
                 LegalCustomer res = LegalCustomerBiz.getInstance().createAndSaveLegalCustomer(request.getParameter("companyName"),
                         request.getParameter("registrationDate"), request.getParameter("economicCode"));
                 request.setAttribute("result", res);
-                nextJsp = "/jsps/show-legal-customer-result.jsp";
+                nextJsp = "/jsps/legalcustomer/show-legal-customer-result.jsp";
 
             } catch (SqlException e) {
                 request.setAttribute("error", e);
@@ -38,11 +38,11 @@ public class LegalCustomerServlet extends HttpServlet {
                 nextJsp = "/jsps/error-page.jsp";
             }
         } else if ("search".equals(operation)) {
-            nextJsp = "/jsps/legal-customer-search-page.jsp";
+            nextJsp = "/jsps/legalcustomer/legal-customer-search-page.jsp";
         } else if ("searchResult".equals(operation)) {
             List<LegalCustomer> legalCustomers = LegalCustomerBiz.getInstance().searchLegalCustomer(request.getParameter("companyName"), request.getParameter("economicCode"), request.getParameter("customerNumber"));
             request.setAttribute("legalCustomers", legalCustomers);
-            nextJsp = "/jsps/show-search-legal-customer.jsp";
+            nextJsp = "/jsps/legalcustomer/show-search-legal-customer.jsp";
         } else if ("update".equals(operation)) {
             try {
                 int id = Integer.parseInt(request.getParameter("id"));
@@ -50,7 +50,7 @@ public class LegalCustomerServlet extends HttpServlet {
 
                 legalCustomer = LegalCustomerBiz.getInstance().findLegalCustomer(id);
                 request.setAttribute("legalCustomer", legalCustomer);
-                nextJsp = "/jsps/legal-customer-update-page.jsp";
+                nextJsp = "/jsps/legalcustomer/legal-customer-update-page.jsp";
 
             } catch (SqlException e) {
                 request.setAttribute("error", e);
@@ -61,7 +61,7 @@ public class LegalCustomerServlet extends HttpServlet {
                 LegalCustomer legalCustomer = LegalCustomerBiz.getInstance().updateLegal(request.getParameter("companyName"), request.getParameter("economicCode"),
                         request.getParameter("registrationDate"), Integer.parseInt(request.getParameter("id")));
                 request.setAttribute("result", legalCustomer);
-                nextJsp = "/jsps/show-legal-customer-result.jsp";
+                nextJsp = "/jsps/legalcustomer/show-legal-customer-result.jsp";
             } catch (SqlException e) {
                 request.setAttribute("error", e);
                 nextJsp = "/jsps/error-page.jsp";
@@ -73,7 +73,7 @@ public class LegalCustomerServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             try {
                 LegalCustomerBiz.getInstance().deleteLegalCustomer(id);
-                nextJsp = "/jsps/legal-customer-delete-page.jsp";
+                nextJsp = "/jsps/legalcustomer/legal-customer-delete-page.jsp";
 
             } catch (SqlException e) {
                 request.setAttribute("error", e);
@@ -81,7 +81,7 @@ public class LegalCustomerServlet extends HttpServlet {
             }
         } else {
             request.getSession().setAttribute("a", "salam");
-            nextJsp = "/jsps/manage-legal-customer.jsp";
+            nextJsp = "/jsps/legalcustomer/manage-legal-customer.jsp";
         }
         RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(nextJsp);
         requestDispatcher.forward(request, response);

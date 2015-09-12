@@ -24,6 +24,9 @@
         <form method="get" action="LoanTypeServlet">
             <input type="submit" name="loanType" value="LoanType" class="selectButton"/>
         </form>
+        <form method="get" action="LoanServlet">
+            <input type="submit" name="loan" value="Loan" class="selectButton"/>
+        </form>
     </div>
 
 </div>

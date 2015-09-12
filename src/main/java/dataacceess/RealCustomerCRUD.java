@@ -2,17 +2,13 @@ package dataacceess;
 
 
 import exception.SqlException;
-import model.LegalCustomer;
 import model.RealCustomer;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
 import org.hibernate.Transaction;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -147,7 +143,24 @@ public class RealCustomerCRUD {
         } finally {
             session.close();
         }
+    }
 
+    public static RealCustomer findRealCustomerWithCustomerNumber(int customerNumber) {
+        SessionFactory sessionFactory = SqlConnect.createSessionFactory();
+        Session session = sessionFactory.openSession();
+        RealCustomer realCustomer ;
+        try {
+            Query query = session.createQuery("SELECT realCustomer From RealCustomer realCustomer  WHERE realCustomer.customerNumber= :customerNumber");
+            query.setParameter("customerNumber", customerNumber);
+            if (query.list().isEmpty()) {
+                return null;
+            } else {
+                realCustomer = (RealCustomer) query.list().get(0);
+                return realCustomer;
+            }
+        } finally {
+            session.close();
+        }
     }
 
 

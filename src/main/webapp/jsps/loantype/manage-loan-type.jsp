@@ -17,7 +17,7 @@
 
     </div>
     <div class="backDiv">
-      <a href="./index.jsp">home</a>
+      <a href="/index.jsp">home</a>
     </div>
   </div>
 </div>

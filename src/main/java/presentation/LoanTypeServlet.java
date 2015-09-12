@@ -1,13 +1,10 @@
 package presentation;
 
-import business.GrantConditionBiz;
+
 import business.LoanTypeBiz;
-import business.RealCustomerBiz;
 import exception.SqlException;
 import exception.ValidationException;
-import model.GrantCondition;
 import model.LoanType;
-import model.RealCustomer;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -25,35 +22,36 @@ public class LoanTypeServlet extends HttpServlet {
         String operation = request.getParameter("operation");
         String nextJsp = null;
         if ("add".equals(operation)) {
-            nextJsp = "/jsps/add-loan-type.jsp"; //
+            nextJsp = "/jsps/loantype/add-loan-type.jsp"; //
         } else if ("next".equals(operation)) {
-            nextJsp = "/jsps/grant-condition.jsp";
-            String loanTypeName = (String) request.getAttribute("loanTypeName");
-            String interestRate = (String) request.getAttribute("interestRate");
+            nextJsp = "/jsps/loantype/grant-condition.jsp";
+            String loanTypeName =  request.getParameter("loanTypeName");
+            String interestRate =  request.getParameter("interestRate");
             request.getSession().setAttribute("loanTypeName", loanTypeName);
             request.getSession().setAttribute("interestRate", interestRate);
         } else if ("save".equals(operation)) {
             LoanType loanType = null;
             try {
                 loanType = LoanTypeBiz.getInstance().createAndSaveLoanType(request.getSession().getAttribute("loanTypeName").toString()
-                        ,new BigDecimal( request.getSession().getAttribute("interestRate").toString())
-                        , request.getParameter("name"), Integer.parseInt(request.getParameter("minContractDuration"))
-                        , Integer.parseInt("maxContractDuration")
-                        , new BigDecimal("minContractAmount")
-                        , new BigDecimal("maxContractAmount"));
+                        , new BigDecimal(request.getSession().getAttribute("interestRate").toString())
+                        , request.getParameterValues("name"), (request.getParameterValues("minContractDuration"))
+                        ,(request.getParameterValues("maxContractDuration"))
+                        ,(request.getParameterValues("minContractAmount"))
+                        , (request.getParameterValues("maxContractAmount")));
 
-                request.setAttribute("realCustomer", realCustomer);
-                next = "/jsps/add-real-customer-page.jsp";
+
+                request.setAttribute("loanType", loanType);
+                nextJsp = "/jsps/loantype/show-loan-type.jsp";
 
             } catch (SqlException e) {
                 request.setAttribute("error", e);
-                next = "/jsps/error-page.jsp";
+                nextJsp = "/jsps/error-page.jsp";
             } catch (ValidationException e) {
                 request.setAttribute("error", e);
-                next = "/jsps/error-page.jsp";
+                nextJsp = "/jsps/error-page.jsp";
             }
         } else {
-            nextJsp = "/jsps/manage-loan-type.jsp";
+            nextJsp = "/jsps/loantype/manage-loan-type.jsp";
         }
         RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(nextJsp);
         requestDispatcher.forward(request, response);

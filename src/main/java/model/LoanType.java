@@ -18,7 +18,8 @@ public class LoanType {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "id")
     private int id;
-
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
+    @JoinColumn(name = "loanTypeId")
     private Set<GrantCondition> grantConditions;
 
     public LoanType() {
@@ -48,8 +49,7 @@ public class LoanType {
         this.id = id;
     }
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
-    @JoinColumn(name = "loanTypeId")
+
     public Set<GrantCondition> getGrantConditions() {
         return grantConditions;
     }

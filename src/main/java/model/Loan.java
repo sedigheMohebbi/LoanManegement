@@ -18,8 +18,12 @@ public class Loan {
     @Column(name = "amountOfContract")
     private BigDecimal amountOfContract;
     @Column(name = "loanTypeId")
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "loanTypeId")
     private LoanType loanType;
     @Column(name = "realCustomerId")
+    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
+    @JoinColumn(name = "customerId")
     private RealCustomer realCustomer;
 
     public Loan() {
@@ -49,8 +53,7 @@ public class Loan {
         this.amountOfContract = amountOfContract;
     }
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "loanTypeId")
+
     public LoanType getLoanType() {
         return loanType;
     }
@@ -59,8 +62,6 @@ public class Loan {
         this.loanType = loanType;
     }
 
-    @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "customerId")
     public RealCustomer getRealCustomer() {
         return realCustomer;
     }

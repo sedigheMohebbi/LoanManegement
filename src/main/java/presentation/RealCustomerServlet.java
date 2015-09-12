@@ -33,7 +33,7 @@ public class RealCustomerServlet extends HttpServlet {
                         request.getParameter("lastName"), request.getParameter("nationalCode"), request.getParameter("birthDate"),
                         request.getParameter("fatherName"));
                 request.setAttribute("realCustomer", realCustomer);
-                next = "/jsps/add-real-customer-page.jsp";
+                next = "/jsps/realcustomer/add-real-customer-page.jsp";
 
             } catch (SqlException e) {
                 request.setAttribute("error", e);
@@ -43,18 +43,18 @@ public class RealCustomerServlet extends HttpServlet {
                 next = "/jsps/error-page.jsp";
             }
         } else if ("search".equals(operation)) {
-            next = "/jsps/real-customer-search-page.jsp";
+            next = "/jsps/realcustomer/real-customer-search-page.jsp";
         } else if ("searchResult".equals(operation)) {
             List<RealCustomer> realCustomers = RealCustomerBiz.getInstance().searchRealCustomer(request.getParameter("firstName"), request.getParameter("lastName"), request.getParameter("nationalCode"), request.getParameter("customerNumber"));
             request.setAttribute("realCustomer", realCustomers);
-            next = "/jsps/show-search-real-customer.jsp";
+            next = "/jsps/realcustomer/show-search-real-customer.jsp";
         } else if ("update".equals(operation)) {
             int id = Integer.parseInt(request.getParameter("id"));
             RealCustomer realCustomer = null;
             try {
                 realCustomer = RealCustomerBiz.getInstance().findRealCustomer(id);
                 request.setAttribute("realCustomer", realCustomer);
-                next = "/jsps/real-customer-update-page.jsp";
+                next = "/jsps/realcustomer/real-customer-update-page.jsp";
             } catch (SqlException e) {
                 request.setAttribute("error", e);
                 next = "/jsps/error-page.jsp";
@@ -64,7 +64,7 @@ public class RealCustomerServlet extends HttpServlet {
                 RealCustomer realCustomer = RealCustomerBiz.getInstance().updateRealCustomer(request.getParameter("firstName"), request.getParameter("lastName"), request.getParameter("fatherName"), request.getParameter("nationalCode"),
                         request.getParameter("birthDate"), Integer.parseInt(request.getParameter("id")));
                 request.setAttribute("realCustomer", realCustomer);
-                next = "/jsps/add-real-customer-page.jsp";
+                next = "/jsps/realcustomer/add-real-customer-page.jsp";
             } catch (SqlException e) {
                 request.setAttribute("error", e);
                 next = "/jsps/error-page.jsp";
@@ -76,13 +76,13 @@ public class RealCustomerServlet extends HttpServlet {
             int id = Integer.parseInt(request.getParameter("id"));
             try {
                 RealCustomerBiz.getInstance().deleteRealCustomer(id);
-                next = "/jsps/real-customer-delete-page.jsp";
+                next = "/jsps/realcustomer/real-customer-delete-page.jsp";
             } catch (SqlException e) {
                 request.setAttribute("error", e);
                 next = "/jsps/error-page.jsp";
             }
         } else {
-            next = "/jsps/manage-real-customer.jsp";
+            next = "/jsps/realcustomer/manage-real-customer.jsp";
         }
         RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(next);
         requestDispatcher.forward(request, response);
