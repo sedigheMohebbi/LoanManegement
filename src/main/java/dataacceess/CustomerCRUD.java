@@ -2,34 +2,24 @@ package dataacceess;
 
 import exception.SqlException;
 import model.Customer;
+import org.apache.log4j.Logger;
+import org.hibernate.Session;
+import org.hibernate.SessionFactory;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
-
+import org.hibernate.Query;
 
 public class CustomerCRUD {
-
-
-
+    private final static Logger logger = Logger.getLogger(Customer.class);
     public static Customer getLastCustomer() throws SqlException {
+        SessionFactory sessionFactory = SqlConnect.createSessionFactory();
+        Session session = sessionFactory.openSession();
         try {
-            Connection connection=SqlConnect.getInstance().getConn();
-            Statement sqlStatement = connection.createStatement();
-            ResultSet resultSet = sqlStatement.executeQuery("SELECT *  FROM customer WHERE  id=(select max(id) from customer)");
-            if (!resultSet.next()) {
-                return null;
-            }
-            Customer customer = new Customer();
-            customer.setCustomerNumber(resultSet.getString("customerNumber"));
-            customer.setId(resultSet.getInt("id"));
-        //    connection.close();
+            Query query = session.createQuery("SELECT customer  FROM Customer customer WHERE  customer.id=(select max(customer1.id) from Customer customer1)");
+            Customer customer = (Customer) query.list().get(0);
+            logger.info("Find Last Customer in DB successfully");
             return customer;
-
-
-        } catch (SQLException e) {
-            throw new SqlException("Error at legal customer save Exception", e);
+        } finally {
+            session.close();
         }
     }
 }

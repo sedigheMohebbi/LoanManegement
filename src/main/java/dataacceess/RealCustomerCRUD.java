@@ -3,6 +3,7 @@ package dataacceess;
 
 import exception.SqlException;
 import model.RealCustomer;
+import org.apache.log4j.Logger;
 import org.hibernate.Query;
 import org.hibernate.Session;
 import org.hibernate.SessionFactory;
@@ -13,7 +14,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RealCustomerCRUD {
-
+    private final static Logger logger = Logger.getLogger(RealCustomer.class);
     static {
         try {
             Class.forName("com.mysql.jdbc.Driver");
@@ -29,6 +30,7 @@ public class RealCustomerCRUD {
         try {
             Transaction transaction = session.beginTransaction();
             session.save(realCustomer);
+            logger.info("save real customer in db");
             transaction.commit();
         } finally {
             session.close();
@@ -70,7 +72,6 @@ public class RealCustomerCRUD {
     }
 
     public static List<RealCustomer> searchRealCustomer(RealCustomer realCustomer) {
-        List<RealCustomer> realCustomers = new ArrayList<RealCustomer>();
         SessionFactory sessionFactory = SqlConnect.createSessionFactory();
         Session session = sessionFactory.openSession();
         try {
@@ -91,7 +92,7 @@ public class RealCustomerCRUD {
             if (realCustomer.getNationalCode().length() > 0) {
                 query.setParameter("customerNumber", realCustomer.getCustomerNumber());
             }
-
+            logger.info("find real customer from db");
             return query.list();
 
         } finally {
@@ -125,6 +126,7 @@ public class RealCustomerCRUD {
             realCustomer1.setNationalCode(realCustomer.getNationalCode());
             realCustomer1.setBirthDate(realCustomer.getBirthDate());
             transaction.commit();
+            logger.info("udate real customer");
             return realCustomer1;
 
         } finally {
@@ -139,13 +141,14 @@ public class RealCustomerCRUD {
             Transaction transaction = session.beginTransaction();
             RealCustomer realCustomer = session.get(RealCustomer.class, id);
             session.delete(realCustomer);
+            logger.info("delete real customer from db");
             transaction.commit();
         } finally {
             session.close();
         }
     }
 
-    public static RealCustomer findRealCustomerWithCustomerNumber(int customerNumber) {
+    public static RealCustomer findRealCustomerWithCustomerNumber(String customerNumber) {
         SessionFactory sessionFactory = SqlConnect.createSessionFactory();
         Session session = sessionFactory.openSession();
         RealCustomer realCustomer ;
@@ -156,6 +159,7 @@ public class RealCustomerCRUD {
                 return null;
             } else {
                 realCustomer = (RealCustomer) query.list().get(0);
+                logger.info("finde real customer");
                 return realCustomer;
             }
         } finally {

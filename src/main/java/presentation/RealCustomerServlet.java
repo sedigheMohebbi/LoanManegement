@@ -1,12 +1,11 @@
 package presentation;
 
 
-import business.LegalCustomerBiz;
 import business.RealCustomerBiz;
 import exception.SqlException;
 import exception.ValidationException;
-import model.LegalCustomer;
 import model.RealCustomer;
+import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -18,6 +17,8 @@ import java.util.List;
 
 
 public class RealCustomerServlet extends HttpServlet {
+    private final static Logger logger = Logger.getLogger(RealCustomer.class);
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -25,7 +26,9 @@ public class RealCustomerServlet extends HttpServlet {
         String operation = request.getParameter("operation");
         String next;
         if ("add".equals(operation)) {
-            next = "/jsps/add-real-customer.jsp";
+            next = "/jsps/realcustomer/add-real-customer.jsp";
+            logger.debug("Forward to " + next);
+
         } else if ("save".equals(operation)) {
             RealCustomer realCustomer = null;
             try {
@@ -34,6 +37,8 @@ public class RealCustomerServlet extends HttpServlet {
                         request.getParameter("fatherName"));
                 request.setAttribute("realCustomer", realCustomer);
                 next = "/jsps/realcustomer/add-real-customer-page.jsp";
+                logger.debug("Forward to " + next);
+
 
             } catch (SqlException e) {
                 request.setAttribute("error", e);
@@ -44,10 +49,14 @@ public class RealCustomerServlet extends HttpServlet {
             }
         } else if ("search".equals(operation)) {
             next = "/jsps/realcustomer/real-customer-search-page.jsp";
+            logger.debug("Forward to " + next);
+
         } else if ("searchResult".equals(operation)) {
             List<RealCustomer> realCustomers = RealCustomerBiz.getInstance().searchRealCustomer(request.getParameter("firstName"), request.getParameter("lastName"), request.getParameter("nationalCode"), request.getParameter("customerNumber"));
             request.setAttribute("realCustomer", realCustomers);
             next = "/jsps/realcustomer/show-search-real-customer.jsp";
+            logger.debug("Forward to " + next);
+
         } else if ("update".equals(operation)) {
             int id = Integer.parseInt(request.getParameter("id"));
             RealCustomer realCustomer = null;
@@ -55,6 +64,8 @@ public class RealCustomerServlet extends HttpServlet {
                 realCustomer = RealCustomerBiz.getInstance().findRealCustomer(id);
                 request.setAttribute("realCustomer", realCustomer);
                 next = "/jsps/realcustomer/real-customer-update-page.jsp";
+                logger.debug("Forward to " + next);
+
             } catch (SqlException e) {
                 request.setAttribute("error", e);
                 next = "/jsps/error-page.jsp";
@@ -65,6 +76,7 @@ public class RealCustomerServlet extends HttpServlet {
                         request.getParameter("birthDate"), Integer.parseInt(request.getParameter("id")));
                 request.setAttribute("realCustomer", realCustomer);
                 next = "/jsps/realcustomer/add-real-customer-page.jsp";
+                logger.debug("Forward to " + next);
             } catch (SqlException e) {
                 request.setAttribute("error", e);
                 next = "/jsps/error-page.jsp";
@@ -77,12 +89,15 @@ public class RealCustomerServlet extends HttpServlet {
             try {
                 RealCustomerBiz.getInstance().deleteRealCustomer(id);
                 next = "/jsps/realcustomer/real-customer-delete-page.jsp";
+                logger.debug("Forward to " + next);
             } catch (SqlException e) {
                 request.setAttribute("error", e);
                 next = "/jsps/error-page.jsp";
             }
         } else {
             next = "/jsps/realcustomer/manage-real-customer.jsp";
+            logger.debug("Forward to " + next);
+
         }
         RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(next);
         requestDispatcher.forward(request, response);

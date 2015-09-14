@@ -4,6 +4,7 @@ import business.LegalCustomerBiz;
 import exception.SqlException;
 import exception.ValidationException;
 import model.LegalCustomer;
+import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -14,6 +15,8 @@ import java.io.IOException;
 import java.util.List;
 
 public class LegalCustomerServlet extends HttpServlet {
+    private final static Logger logger = Logger.getLogger(LegalCustomer.class);
+
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -22,13 +25,16 @@ public class LegalCustomerServlet extends HttpServlet {
         String nextJsp;
         System.out.println("request.getSession().getAttribute(\"a\") = " + request.getSession().getAttribute("a"));
         if ("add".equals(operation)) {
+
             nextJsp = "/jsps/legalcustomer/add-legal-customer.jsp";
+            logger.debug("Forward to " + "/jsps/legalcustomer/add-legal-customer.jsp ");
         } else if ("save".equals(operation)) {
             try {
                 LegalCustomer res = LegalCustomerBiz.getInstance().createAndSaveLegalCustomer(request.getParameter("companyName"),
                         request.getParameter("registrationDate"), request.getParameter("economicCode"));
                 request.setAttribute("result", res);
                 nextJsp = "/jsps/legalcustomer/show-legal-customer-result.jsp";
+                logger.debug("Forward to " + "/jsps/legalcustomer/show-legal-customer-result.jsp");
 
             } catch (SqlException e) {
                 request.setAttribute("error", e);
@@ -39,18 +45,20 @@ public class LegalCustomerServlet extends HttpServlet {
             }
         } else if ("search".equals(operation)) {
             nextJsp = "/jsps/legalcustomer/legal-customer-search-page.jsp";
+            logger.debug("Forward to " + "/jsps/legalcustomer/legal-customer-search-page.jsp");
         } else if ("searchResult".equals(operation)) {
             List<LegalCustomer> legalCustomers = LegalCustomerBiz.getInstance().searchLegalCustomer(request.getParameter("companyName"), request.getParameter("economicCode"), request.getParameter("customerNumber"));
             request.setAttribute("legalCustomers", legalCustomers);
             nextJsp = "/jsps/legalcustomer/show-search-legal-customer.jsp";
+            logger.debug("Forward to " + "/jsps/legalcustomer/show-search-legal-customer.jsp");
         } else if ("update".equals(operation)) {
             try {
                 int id = Integer.parseInt(request.getParameter("id"));
                 LegalCustomer legalCustomer;
-
                 legalCustomer = LegalCustomerBiz.getInstance().findLegalCustomer(id);
                 request.setAttribute("legalCustomer", legalCustomer);
                 nextJsp = "/jsps/legalcustomer/legal-customer-update-page.jsp";
+                logger.debug("Forward to " + nextJsp);
 
             } catch (SqlException e) {
                 request.setAttribute("error", e);
@@ -62,6 +70,8 @@ public class LegalCustomerServlet extends HttpServlet {
                         request.getParameter("registrationDate"), Integer.parseInt(request.getParameter("id")));
                 request.setAttribute("result", legalCustomer);
                 nextJsp = "/jsps/legalcustomer/show-legal-customer-result.jsp";
+                logger.debug("Forward to " + nextJsp);
+
             } catch (SqlException e) {
                 request.setAttribute("error", e);
                 nextJsp = "/jsps/error-page.jsp";
@@ -74,6 +84,7 @@ public class LegalCustomerServlet extends HttpServlet {
             try {
                 LegalCustomerBiz.getInstance().deleteLegalCustomer(id);
                 nextJsp = "/jsps/legalcustomer/legal-customer-delete-page.jsp";
+                logger.debug("Forward to " + nextJsp);
 
             } catch (SqlException e) {
                 request.setAttribute("error", e);
@@ -82,6 +93,7 @@ public class LegalCustomerServlet extends HttpServlet {
         } else {
             request.getSession().setAttribute("a", "salam");
             nextJsp = "/jsps/legalcustomer/manage-legal-customer.jsp";
+            logger.debug("Forward to " + nextJsp);
         }
         RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(nextJsp);
         requestDispatcher.forward(request, response);

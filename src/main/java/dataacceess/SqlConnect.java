@@ -38,6 +38,7 @@ public class SqlConnect {
             configuration.addAnnotatedClass(RealCustomer.class);
             configuration.addAnnotatedClass(GrantCondition.class);
             configuration.addAnnotatedClass(LoanType.class);
+            configuration.addAnnotatedClass(Loan.class);
 
             ServiceRegistry serviceRegistry = new StandardServiceRegistryBuilder().applySettings(configuration.getProperties()).build();
             sessionFactory = configuration.buildSessionFactory(serviceRegistry);

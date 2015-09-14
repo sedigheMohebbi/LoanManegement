@@ -5,6 +5,7 @@ import business.LoanTypeBiz;
 import exception.SqlException;
 import exception.ValidationException;
 import model.LoanType;
+import org.apache.log4j.Logger;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -15,6 +16,7 @@ import java.io.IOException;
 import java.math.BigDecimal;
 
 public class LoanTypeServlet extends HttpServlet {
+    private final static Logger logger = Logger.getLogger(LoanType.class);
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
         request.setCharacterEncoding("UTF-8");
@@ -22,7 +24,8 @@ public class LoanTypeServlet extends HttpServlet {
         String operation = request.getParameter("operation");
         String nextJsp = null;
         if ("add".equals(operation)) {
-            nextJsp = "/jsps/loantype/add-loan-type.jsp"; //
+            nextJsp = "/jsps/loantype/add-loan-type.jsp";
+            logger.debug("Forward to "+ nextJsp);
         } else if ("next".equals(operation)) {
             nextJsp = "/jsps/loantype/grant-condition.jsp";
             String loanTypeName =  request.getParameter("loanTypeName");
@@ -42,6 +45,7 @@ public class LoanTypeServlet extends HttpServlet {
 
                 request.setAttribute("loanType", loanType);
                 nextJsp = "/jsps/loantype/show-loan-type.jsp";
+                logger.debug("Forward to "+ nextJsp);
 
             } catch (SqlException e) {
                 request.setAttribute("error", e);
@@ -52,6 +56,8 @@ public class LoanTypeServlet extends HttpServlet {
             }
         } else {
             nextJsp = "/jsps/loantype/manage-loan-type.jsp";
+            logger.debug("Forward to "+ nextJsp);
+
         }
         RequestDispatcher requestDispatcher = getServletContext().getRequestDispatcher(nextJsp);
         requestDispatcher.forward(request, response);

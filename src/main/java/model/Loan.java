@@ -17,13 +17,11 @@ public class Loan {
     private int durationOfContract;
     @Column(name = "amountOfContract")
     private BigDecimal amountOfContract;
-    @Column(name = "loanTypeId")
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinColumn(name = "loanTypeId")
     private LoanType loanType;
-    @Column(name = "realCustomerId")
     @ManyToOne(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
-    @JoinColumn(name = "customerId")
+    @JoinColumn(name = "realCustomerId")
     private RealCustomer realCustomer;
 
     public Loan() {
@@ -61,6 +59,7 @@ public class Loan {
     public void setLoanType(LoanType loanType) {
         this.loanType = loanType;
     }
+
 
     public RealCustomer getRealCustomer() {
         return realCustomer;

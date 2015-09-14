@@ -4,7 +4,6 @@
 body {
     background: url("/images/gradient-background.jpg") no-repeat fixed top center;
     background-size: cover;
-
 }
 
 .headerDiv {
@@ -25,11 +24,13 @@ body {
     border: 2px solid;
 
 }
-.form-style-1 .field-divided{
+
+.form-style-1 .field-divided {
     width: 49%;
 }
-.form-style-1 .required{
-    color:red;
+
+.form-style-1 .required {
+    color: red;
 }
 
 .selectButton {
@@ -93,7 +94,7 @@ body {
     font-weight: bold;
 }
 
-.form-style-1 input[type=text] {
+.form-style-1 input[type=text],select{
     box-sizing: border-box;
     -webkit-box-sizing: border-box;
     -moz-box-sizing: border-box;
@@ -107,7 +108,7 @@ body {
     outline: none;
 }
 
-.form-style-1 input[type=text]:focus {
+.form-style-1 input[type=text]:focus,select:focus {
     -moz-box-shadow: 0 0 8px #88D5E9;
     -webkit-box-shadow: 0 0 8px #88D5E9;
     box-shadow: 0 0 8px #88D5E9;
@@ -129,7 +130,7 @@ body {
     border: solid #1f628d 2px;
 }
 
-.form-style-1 input[type=submit]:hover ,
+.form-style-1 input[type=submit]:hover,
 .form-style-1 input[type=button]:hover {
     background: #0097f5;
     box-shadow: none;
@@ -159,7 +160,6 @@ body {
 a {
     color: brown;
 
-
 }
 
 .inputSubmit {
@@ -176,7 +176,6 @@ a {
     -webkit-box-shadow: none;
     cursor: pointer;
 
-
 }
 
 #massage {
@@ -185,7 +184,7 @@ a {
     font-style: italic;
 }
 
-.backDiv{
+.backDiv {
     clear: both;
     width: 100%;
     text-align: center;
@@ -209,14 +208,35 @@ a {
 .contentDiv {
     min-height: 280px;
 }
-.resultTable input[type=text]{
+
+.resultTable input[type=text] {
     background: none;
     border: none;
     width: 100px;
     text-align: center;
 }
 
+.iframe-div iframe {
+    width: 100%;
+    border: none;
+    background: none;
+}
+.iframe-div{
+    margin: 10px auto;
+    max-width: 400px;
+    background: none;
+    height: 100px;
+}
 
-
-
-
+.no-background-body {
+    background: none;
+    margin: 0;
+}
+.inner-ul{
+    margin-top: 0px;
+    margin-bottom: 0px;
+    padding: 0px;
+}
+.form-style-1 .field-select{
+    width: 100%;
+}

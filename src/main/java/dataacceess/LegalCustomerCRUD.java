@@ -3,12 +3,16 @@ package dataacceess;
 
 import exception.SqlException;
 import model.LegalCustomer;
+import model.RealCustomer;
+import org.apache.log4j.Logger;
 import org.hibernate.*;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class LegalCustomerCRUD {
 
+    private final static Logger logger = Logger.getLogger(LegalCustomer.class);
 
     public static LegalCustomer saveLegalCustomer(LegalCustomer legalCustomer) throws SqlException {
         SessionFactory sf = SqlConnect.createSessionFactory();
@@ -16,6 +20,7 @@ public class LegalCustomerCRUD {
         try {
             Transaction tx = session.beginTransaction();
             session.save(legalCustomer);
+            logger.info("Legal Customer Save in DB");
             tx.commit();
         } finally {
 
@@ -34,6 +39,7 @@ public class LegalCustomerCRUD {
             if (economic.isEmpty()) {
                 return false;
             } else {
+                logger.info("Find Economic Code");
                 return true;
             }
         } finally {
@@ -52,6 +58,7 @@ public class LegalCustomerCRUD {
             if (ecoList.isEmpty()) {
                 return false;
             } else {
+                logger.info("Find Economic Code with id ");
                 return true;
             }
 
@@ -77,7 +84,9 @@ public class LegalCustomerCRUD {
             if (legalCustomer.getCustomerNumber().length() > 0) {
                 query.setParameter("customerNo", legalCustomer.getCustomerNumber());
             }
-            return query.list();
+            List<LegalCustomer> legalCustomers = query.list();
+            logger.info("Legal Customer search in db successfully");
+            return legalCustomers;
 
         } finally {
 
@@ -90,7 +99,7 @@ public class LegalCustomerCRUD {
         Session session = sessionFactory.openSession();
         try {
             LegalCustomer legalCustomer = session.get(LegalCustomer.class, id);
-
+            logger.info("load legal customer");
             return legalCustomer;
         } finally {
 
@@ -110,6 +119,7 @@ public class LegalCustomerCRUD {
             legalCustomer1.setRegistrationDate(legalCustomer.getRegistrationDate());
             session.update(legalCustomer1);
             transaction.commit();
+            logger.info("update legal customer in db ");
             return legalCustomer1;
         } finally {
             session.close();
@@ -123,10 +133,10 @@ public class LegalCustomerCRUD {
             Transaction transaction = session.beginTransaction();
             LegalCustomer legalCustomer = session.load(LegalCustomer.class, id);
             session.delete(legalCustomer);
+            logger.info("delete legal customer in db");
             transaction.commit();
 
-        }
-        finally {
+        } finally {
             session.close();
         }
     }
